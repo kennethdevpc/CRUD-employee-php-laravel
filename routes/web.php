@@ -24,7 +24,7 @@ Route::get('/empleado', function () {
 Route::get('/empleado/create',[EmpleadoController::class,'create']); //forma 1 para acceder solo a una ruta
 Route::resource('empleado',EmpleadoController::class); //para acceder a todos lo metodos
 
-Auth::routes();
+Auth::routes(['register'=>false,'reset'=>false]);
 
 Route::get('/home', [EmpleadoController::class, 'index'])->name('home');
 Route::group(['middleware'=>'auth'],function (){

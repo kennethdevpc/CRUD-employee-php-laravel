@@ -37,6 +37,22 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+        //--validacion
+        $campos = [
+            'Nombre'=>'required|string|max:100',
+            'Apellido'=>'required|string|max:100',
+            'Correo'=>'required|email',
+            'Foto'=>'required|max:10000|mimes:jpeg,png,jpg',
+        ];
+        $mensaje = [
+            'required'=>'El :attribute es requerido',
+            'Foto.required'=>'La :attribute es requerida'
+        ];
+
+        $this->validate($request,$campos,$mensaje);
+
+        //--fin validacion
+
         //$dataEmployee = request()->all();
         $dataEmployee = request()->except('_token');
         if ($request->hasFile('Foto')) {
@@ -82,6 +98,25 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $idONombreCualquiera)
     {
+        //--validacion
+        $campos = [
+            'Nombre'=>'required|string|max:100',
+            'Apellido'=>'required|string|max:100',
+            'Correo'=>'required|email',
+        ];
+        $mensaje = [
+            'required'=>'El :attribute es requerido',
+        ];
+        if ($request->hasFile('Foto')) {
+            $campos=['Foto'=>'required|max:10000|mimes:jpeg,png,jpg'];
+            $mensaje=['Foto.required'=>'la foto es requerida'];
+
+        }
+
+        $this->validate($request,$campos,$mensaje);
+
+        //--fin validacion
+
         //$dataEmployee = request()->all();
         //return response()->json($dataEmployee);
         $dataEmployee = request()->except('_token', '_method');
@@ -95,7 +130,9 @@ class EmpleadoController extends Controller
 
         Empleado::where('id','=', $idONombreCualquiera)->update($dataEmployee);
         $empleado = Empleado::findOrFail($idONombreCualquiera);
-        return view('empleado.edit', compact('empleado'));
+        //return view('empleado.edit', compact('empleado'));
+        return redirect('empleado')->with('mensaje','!se actualizo el empleado correctamente¡');
+
 
     }
 
