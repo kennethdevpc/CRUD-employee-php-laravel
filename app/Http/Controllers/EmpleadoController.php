@@ -15,7 +15,7 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        $data['empleados'] = Empleado::paginate(20); //el nombre empleados lo puedo acceder desde las vistas
+        $data['empleados'] = Empleado::paginate(2); //el nombre empleados lo puedo acceder desde las vistas
         return view('empleado.index', $data); //entonces la vista index toma esa vista index y le pasa $data
     }
 
